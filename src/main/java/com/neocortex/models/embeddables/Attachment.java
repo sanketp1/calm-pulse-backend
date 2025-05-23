@@ -1,4 +1,4 @@
-package com.neocortex.models;
+package com.neocortex.models.embeddables;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

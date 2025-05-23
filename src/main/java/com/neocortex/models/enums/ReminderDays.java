@@ -1,4 +1,4 @@
-package com.neocortex.models;
+package com.neocortex.models.enums;
 
 public enum ReminderDays {
     MONDAY,

@@ -1,5 +1,6 @@
-package com.neocortex.models;
+package com.neocortex.models.embeddables;
 
+import com.neocortex.models.enums.Status;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
