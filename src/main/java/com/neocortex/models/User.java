@@ -21,6 +21,8 @@ import java.util.UUID;
  *   <li><b>email</b>: User's email address (unique, required for login).</li>
  *   <li><b>password</b>: Hashed password for authentication (required).</li>
  *   <li><b>avatar</b>: URL or path to the user's profile image.</li>
+ *   <li><b>phoneNumber</b>: User's phone number for contact (optional).</li>
+ *   <li><b>address</b>: User's address for contact (optional).</li>
  *   <li><b>joinedDate</b>: Timestamp when the user registered.</li>
  *   <li><b>lastLogin</b>: Timestamp of the user's last login.</li>
  *   <li><b>lastUpdated</b>: Timestamp of the last profile update.</li>
@@ -53,6 +55,19 @@ public class User {
      */
     private String name;
 
+/**
+     * The user's phone number.
+     * Optional field for contact information.
+     */
+    @Column(name = "phone_number", nullable = true)
+    private String phoneNumber;
+
+    /**
+     * The user's address.
+     * Optional field for additional contact details.
+     */
+    @Column(name = "address", nullable = true)
+    private String address;
     /**
      * The user's email address. Must be unique and not null.
      * Used for login and communication.
