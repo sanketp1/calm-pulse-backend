@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: CALM PULSE BACKEND
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/calm_pulse_db?useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+jwt-security:
+  secret: 68d1cfe361c1a01dd424b8ba8cd6c01ec4d6701c3e609ff8e5096b8c882ad36c
+  expiration: 86400 # 1 day
