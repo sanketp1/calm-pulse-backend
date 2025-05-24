@@ -9,6 +9,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.ManyToOne;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +33,11 @@ import java.time.LocalDateTime;
  *   <li><b>user</b> \(`User`\): The user who created this journal entry; many-to-one relationship.</li>
  * </ul>
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "journals")
 public class Journal {

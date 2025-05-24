@@ -2,6 +2,7 @@ package com.neocortex.models;
 
 import com.neocortex.models.enums.ReminderDays;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,6 +26,11 @@ import java.util.List;
  *   <li><b>user</b>: The user who owns this reminder (User, many-to-one relationship).</li>
  * </ul>
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "reminders")
 public class Reminder {

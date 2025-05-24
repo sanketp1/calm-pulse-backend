@@ -3,6 +3,7 @@ package com.neocortex.models;
 import com.neocortex.models.embeddables.Location;
 import com.neocortex.models.enums.MoodType;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +26,11 @@ import java.time.LocalDateTime;
  *   <li><b>user</b>: Reference to the user who created the mood entry (User, many-to-one relationship).</li>
  * </ul>
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "moods")
 public class Mood {

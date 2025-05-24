@@ -2,6 +2,7 @@ package com.neocortex.models;
 
 import com.neocortex.models.embeddables.Achievements;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
@@ -27,6 +28,11 @@ import java.util.List;
  *   <li><b>user</b>: Reference to the associated user (User, one-to-one relationship).</li>
  * </ul>
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "user_stats")
 public class UserStats {
