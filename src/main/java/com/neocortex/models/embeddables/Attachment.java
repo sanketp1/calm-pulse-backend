@@ -12,7 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Embeddable
 public class Attachment {
-    private Long id;
     private String fileName;
     private String fileType;
     private String fileUrl;
