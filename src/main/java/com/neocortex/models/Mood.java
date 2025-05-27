@@ -87,4 +87,9 @@ public class Mood {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @PrePersist
+    public void autoSetTimeStamp(){
+            this.timeStamp = LocalDateTime.now();
+    }
 }

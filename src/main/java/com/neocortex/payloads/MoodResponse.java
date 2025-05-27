@@ -1,5 +1,6 @@
 package com.neocortex.payloads;
 
+import com.neocortex.models.embeddables.Location;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,5 +17,5 @@ public class MoodResponse {
     private Integer value;
     private String note;
     private LocalDateTime timeStamp;
-    private String location;
+    private Location location;
 }

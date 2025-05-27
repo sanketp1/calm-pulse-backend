@@ -10,7 +10,7 @@ import lombok.*;
 @Embeddable
 public class Location {
         private String name;
-        double latitude;
-        double longitude;
-
+        private double latitude;
+        private double longitude;
 }
+
