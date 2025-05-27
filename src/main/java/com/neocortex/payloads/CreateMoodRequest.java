@@ -1,5 +1,7 @@
 package com.neocortex.payloads;
 
+import com.neocortex.models.embeddables.Location;
+import com.neocortex.models.enums.MoodType;
 import lombok.*;
 
 import jakarta.validation.constraints.NotBlank;
@@ -13,16 +15,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class CreateMoodRequest {
-    @NotBlank(message = "Mood type is required")
-    private String moodType;
+   @NotNull(message = "Mood type is required")
+   private MoodType moodType;
 
     private Integer value;
 
     private String note;
 
-    @NotNull(message = "Timestamp is required")
-    private LocalDateTime timeStamp;
 
-    private String location;
+    private Location location;
 
 }

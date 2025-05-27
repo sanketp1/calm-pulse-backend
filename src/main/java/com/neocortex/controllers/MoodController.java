@@ -2,6 +2,7 @@ package com.neocortex.controllers;
 
 import com.neocortex.payloads.CreateMoodRequest;
 import com.neocortex.payloads.MoodResponse;
+import com.neocortex.payloads.PaginatedResponse;
 import com.neocortex.payloads.UpdateMoodRequest;
 import com.neocortex.services.IMoodService;
 import jakarta.validation.Valid;
@@ -39,10 +40,16 @@ public class MoodController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MoodResponse>> getAllMoods(@RequestParam UUID userId) {
-        log.info("Fetching all moods for user {}", userId);
-        return ResponseEntity.ok(moodService.getAllMoodsByUser(userId));
+    public ResponseEntity<PaginatedResponse<MoodResponse>> getAllMoods(
+            @RequestParam UUID userId,
+            @RequestParam(required = false) Long cursor,
+            @RequestParam(defaultValue = "10") int limit
+    ) {
+        log.info("Fetching paginated moods for user {}, cursor={}, limit={}", userId, cursor, limit);
+        PaginatedResponse<MoodResponse> response = moodService.getAllMoodsByUser(userId, cursor, limit);
+        return ResponseEntity.ok(response);
     }
+
 
     @PutMapping("/{moodId}")
     public ResponseEntity<MoodResponse> updateMood(

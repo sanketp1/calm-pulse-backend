@@ -1,6 +1,7 @@
 package com.neocortex.services;
 
 import com.neocortex.payloads.CreateMoodRequest;
+import com.neocortex.payloads.PaginatedResponse;
 import com.neocortex.payloads.UpdateMoodRequest;
 import com.neocortex.payloads.MoodResponse;
 
@@ -31,7 +32,7 @@ public interface IMoodService {
     /**
      * Creates a new mood entry for the specified user.
      *
-     * @param userId the unique identifier of the user (UUID)
+     * @param userId            the unique identifier of the user (UUID)
      * @param createMoodRequest the request payload containing mood details
      * @return the created {@link MoodResponse}
      */
@@ -46,19 +47,22 @@ public interface IMoodService {
      */
     MoodResponse getMoodById(UUID userId, Long moodId);
 
+
     /**
-     * Retrieves all mood entries for the specified user.
+     * Retrieves a paginated list of mood entries for a specific user.
      *
      * @param userId the unique identifier of the user (UUID)
-     * @return a list of {@link MoodResponse} objects
+     * @param cursor the ID of the last retrieved mood entry, used for pagination (nullable)
+     * @param limit  the maximum number of mood entries to retrieve per page
+     * @return a {@link PaginatedResponse} containing the list of mood entries and pagination details
      */
-    List<MoodResponse> getAllMoodsByUser(UUID userId);
+    PaginatedResponse<MoodResponse> getAllMoodsByUser(UUID userId, Long cursor, int limit);
 
     /**
      * Updates an existing mood entry for the specified user.
      *
-     * @param userId the unique identifier of the user (UUID)
-     * @param moodId the unique identifier of the mood entry (Long)
+     * @param userId            the unique identifier of the user (UUID)
+     * @param moodId            the unique identifier of the mood entry (Long)
      * @param updateMoodRequest the request payload containing updated mood details
      * @return the updated {@link MoodResponse}
      */
@@ -75,7 +79,7 @@ public interface IMoodService {
     /**
      * Deletes multiple mood entries for the specified user.
      *
-     * @param userId the unique identifier of the user (UUID)
+     * @param userId  the unique identifier of the user (UUID)
      * @param moodIds a list of mood entry IDs (Long) to be deleted
      */
     void deleteMultipleMoods(UUID userId, List<Long> moodIds);

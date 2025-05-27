@@ -5,6 +5,7 @@ import com.neocortex.models.Mood;
 import com.neocortex.models.User;
 import com.neocortex.payloads.CreateMoodRequest;
 import com.neocortex.payloads.MoodResponse;
+import com.neocortex.payloads.PaginatedResponse;
 import com.neocortex.payloads.UpdateMoodRequest;
 import com.neocortex.repositories.MoodRepository;
 import com.neocortex.repositories.UserRepository;
@@ -12,6 +13,9 @@ import com.neocortex.services.IMoodService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,14 +65,35 @@ public class MoodService implements IMoodService {
     }
 
     @Override
-    public List<MoodResponse> getAllMoodsByUser(UUID userId) {
-        log.info("Fetching all moods for user: {}", userId);
+    public PaginatedResponse<MoodResponse> getAllMoodsByUser(UUID userId, Long cursor, int limit) {
+        log.info("Fetching paginated moods for user: {}, cursor: {}, limit: {}", userId, cursor, limit);
         validateUserExists(userId);
 
-        return moodRepository.findAllByUserId(userId).stream()
+        Pageable pageable = PageRequest.of(0, limit, Sort.by("id").ascending());
+        List<Mood> moods;
+
+        if (cursor == null) {
+            moods = moodRepository.findByUserIdOrderByIdAsc(userId, pageable);
+        } else {
+            moods = moodRepository.findByUserIdAndIdGreaterThanOrderByIdAsc(userId, cursor, pageable);
+        }
+
+        List<MoodResponse> moodResponses = moods.stream()
                 .map(mood -> modelMapper.map(mood, MoodResponse.class))
                 .toList();
+
+        String nextCursor = !moods.isEmpty() ? String.valueOf(moods.get(moods.size() - 1).getId()) : null;
+        boolean hasNext = moods.size() == limit;
+
+        PaginatedResponse<MoodResponse> response = new PaginatedResponse<>();
+        response.setData(moodResponses);
+        response.setTotalElements(moodResponses.size());
+        response.setNextCursor(nextCursor);
+        response.setHasNext(hasNext);
+
+        return response;
     }
+
 
     @Override
     public MoodResponse updateMood(UUID userId, Long moodId, UpdateMoodRequest request) {
