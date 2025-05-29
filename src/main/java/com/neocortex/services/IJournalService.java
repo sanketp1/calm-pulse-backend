@@ -1,8 +1,11 @@
 package com.neocortex.services;
 
 import com.neocortex.payloads.CreateJournalRequest;
+import com.neocortex.payloads.PaginatedResponse;
 import com.neocortex.payloads.UpdateJournalRequest;
 import com.neocortex.payloads.JournalResponse;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,13 +46,18 @@ public interface IJournalService {
      */
     JournalResponse getJournalById(UUID userId, Long journalId);
 
+
     /**
-     * Retrieves all journal entries for the specified user.
+     * Retrieves a paginated list of journal entries for the specified user,
+     * ordered by most recent creation time.
      *
      * @param userId the unique identifier of the user (UUID)
-     * @return a list of {@link JournalResponse} objects
+     * @param cursor the timestamp cursor for pagination; fetches entries created before this time (nullable)
+     * @param limit the maximum number of journal entries to return
+     * @return a paginated response containing a list of {@link JournalResponse} objects
      */
-    List<JournalResponse> getAllJournalsByUser(UUID userId);
+    PaginatedResponse<JournalResponse> getAllJournalsByUser(UUID userId, LocalDateTime cursor, int limit);
+
 
     /**
      * Updates an existing journal entry for the specified user.
