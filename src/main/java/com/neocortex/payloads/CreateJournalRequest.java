@@ -1,5 +1,7 @@
 package com.neocortex.payloads;
 
+import com.neocortex.models.embeddables.Attachment;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import jakarta.validation.constraints.NotBlank;
@@ -13,15 +15,14 @@ import java.util.UUID;
 public class CreateJournalRequest {
     private String prompt;
 
-    @NotBlank(message = "Mood is required")
-    private String mood;
+    @NotNull(message = "Mood is required")
+    private CreateMoodRequest mood;
 
     @NotBlank(message = "Title is required")
     private String title;
 
     private String description;
-    private String attachmentURL;
 
-    @NotBlank(message = "User ID is required")
-    private UUID userId;
+    private Attachment attachment;
+
 }

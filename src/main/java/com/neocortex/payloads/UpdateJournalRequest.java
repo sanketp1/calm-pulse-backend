@@ -1,5 +1,6 @@
 package com.neocortex.payloads;
 
+import com.neocortex.models.embeddables.Attachment;
 import lombok.*;
 
 @Getter
@@ -9,8 +10,8 @@ import lombok.*;
 @Builder
 public class UpdateJournalRequest {
     private String prompt;
-    private String mood;
+    private MoodPayload mood;
     private String title;
     private String description;
-    private String attachmentURL;
+    private Attachment attachment;
 }
