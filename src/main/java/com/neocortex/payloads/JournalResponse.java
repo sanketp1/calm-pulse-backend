@@ -1,5 +1,6 @@
 package com.neocortex.payloads;
 
+import com.neocortex.models.embeddables.Attachment;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,10 +14,10 @@ import java.util.UUID;
 public class JournalResponse {
     private Long id;
     private String prompt;
-    private String mood;
+    private MoodResponse mood;
     private String title;
     private String description;
-    private String attachmentURL;
-    private LocalDateTime timeStamp;
+    private Attachment attachment;
+    private LocalDateTime createdAt;
     private UUID userId;
 }
