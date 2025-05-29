@@ -1,14 +1,7 @@
 package com.neocortex.models;
 
 import com.neocortex.models.embeddables.Attachment;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -94,7 +87,7 @@ public class Journal {
      * Type: LocalDateTime
      * Optional field.
      */
-    private LocalDateTime timeStamp;
+    private LocalDateTime createdAt;
 
     /**
      * The user who created this journal entry.
@@ -104,4 +97,11 @@ public class Journal {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @PrePersist
+    public void autoSetTimeStamp(){
+        createdAt = LocalDateTime.now();
+    }
+
+
 }
