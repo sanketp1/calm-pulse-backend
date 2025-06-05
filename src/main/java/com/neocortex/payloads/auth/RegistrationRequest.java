@@ -1,4 +1,4 @@
-package com.neocortex.payloads;
+package com.neocortex.payloads.auth;
 
 
 import jakarta.validation.constraints.Email;

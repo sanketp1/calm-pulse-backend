@@ -1,4 +1,4 @@
-package com.neocortex.payloads;
+package com.neocortex.payloads.reminder;
 
 import com.neocortex.models.enums.ReminderDays;
 import lombok.*;
@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -26,6 +25,5 @@ public class CreateReminderRequest {
 
     private boolean enabled;
 
-    @NotNull(message = "User ID is required")
-    private UUID userId;
+
 }

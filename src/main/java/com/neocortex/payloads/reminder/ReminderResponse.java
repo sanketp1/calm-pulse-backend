@@ -1,4 +1,4 @@
-package com.neocortex.payloads;
+package com.neocortex.payloads.reminder;
 
 import com.neocortex.models.enums.ReminderDays;
 import lombok.*;

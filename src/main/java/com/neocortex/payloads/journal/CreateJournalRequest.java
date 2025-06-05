@@ -1,11 +1,11 @@
-package com.neocortex.payloads;
+package com.neocortex.payloads.journal;
 
 import com.neocortex.models.embeddables.Attachment;
+import com.neocortex.payloads.mood.CreateMoodRequest;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import jakarta.validation.constraints.NotBlank;
-import java.util.UUID;
 
 @Getter
 @Setter

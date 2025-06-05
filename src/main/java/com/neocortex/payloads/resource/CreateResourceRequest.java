@@ -1,12 +1,12 @@
-package com.neocortex.payloads;
+package com.neocortex.payloads.resource;
 
+import com.neocortex.models.embeddables.Attachment;
 import lombok.*;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 import java.time.Duration;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -27,8 +27,6 @@ public class CreateResourceRequest {
 
     private List<String> benefits;
 
-    private List<String> attachments;
+    private List<Attachment> attachments;
 
-    @NotNull(message = "User ID is required")
-    private UUID userId;
 }

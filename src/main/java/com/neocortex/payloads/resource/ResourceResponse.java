@@ -1,5 +1,6 @@
-package com.neocortex.payloads;
+package com.neocortex.payloads.resource;
 
+import com.neocortex.models.embeddables.Attachment;
 import lombok.*;
 
 import java.time.Duration;
@@ -19,6 +20,6 @@ public class ResourceResponse {
     private Duration duration;
     private List<String> instructions;
     private List<String> benefits;
-    private List<String> attachments;
+    private List<Attachment> attachments;
     private UUID userId;
 }

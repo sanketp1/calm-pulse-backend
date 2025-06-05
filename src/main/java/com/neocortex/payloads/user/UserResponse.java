@@ -1,4 +1,4 @@
-package com.neocortex.payloads;
+package com.neocortex.payloads.user;
 
 import lombok.*;
 

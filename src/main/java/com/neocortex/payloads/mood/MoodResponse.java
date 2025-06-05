@@ -1,7 +1,6 @@
-package com.neocortex.payloads;
+package com.neocortex.payloads.mood;
 
 import com.neocortex.models.embeddables.Location;
-import com.neocortex.models.enums.MoodType;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,9 +10,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MoodPayload {
-    private Long id; // Needed for update to identify the mood entry
-    private MoodType moodType;
+public class MoodResponse {
+    private Long id;
+    private String moodType;
     private Integer value;
     private String note;
     private LocalDateTime timeStamp;

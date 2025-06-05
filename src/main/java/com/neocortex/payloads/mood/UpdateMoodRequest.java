@@ -1,4 +1,4 @@
-package com.neocortex.payloads;
+package com.neocortex.payloads.mood;
 
 import com.neocortex.models.embeddables.Location;
 import com.neocortex.models.enums.MoodType;
