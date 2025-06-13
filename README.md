@@ -15,17 +15,17 @@
 
 ```mermaid
 graph LR
-    A[User] -->|creates|> B[Journal]
-    A -->|creates|> C[Reminder]
-    A -->|checks in|> D[Mood]
-    B -->|has|> E[Attachment]
-    C -->|has|> F[ReminderDays]
-    D -->|has|> G[MoodType]
-    A -->|has|> H[UserStats]
-    H -->|tracks|> I[JournalEntries]
-    H -->|tracks|> J[MoodCheckIns]
-    H -->|tracks|> K[ResourcesUsed]
-    H -->|tracks|> L[Achievements]
+    A[User] -->|creates| B[Journal]
+    A -->|creates| C[Reminder]
+    A -->|checks in| D[Mood]
+    B -->|has| E[Attachment]
+    C -->|has| F[ReminderDays]
+    D -->|has| G[MoodType]
+    A -->|has| H[UserStats]
+    H -->|tracks| I[JournalEntries]
+    H -->|tracks| J[MoodCheckIns]
+    H -->|tracks| K[ResourcesUsed]
+    H -->|tracks| L[Achievements]
 ```
 
 ---
