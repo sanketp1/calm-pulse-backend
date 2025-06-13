@@ -1,25 +1,73 @@
 # Calm Pulses Backend
 
-## High-Level Architecture
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-17-blue?logo=java" />
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen?logo=springboot" />
+  <img src="https://img.shields.io/badge/MySQL-8+-blue?logo=mysql" />
+  <img src="https://img.shields.io/badge/Gradle-Build-green?logo=gradle" />
+  <img src="https://img.shields.io/badge/JWT-Security-orange?logo=jsonwebtokens" />
+  <img src="https://img.shields.io/badge/OpenAPI-Swagger-yellow?logo=swagger" />
+</p>
+
+---
+
+## 🏗️ High-Level Architecture
 
 ```mermaid
 graph LR
-    A[User] -->|creates| B[Journal]
-    A -->|creates| C[Reminder]
-    A -->|checks in| D[Mood]
-    B -->|has| E[Attachment]
-    C -->|has| F[ReminderDays]
-    D -->|has| G[MoodType]
-    A -->|has| H[UserStats]
-    H -->|tracks| I[JournalEntries]
-    H -->|tracks| J[MoodCheckIns]
-    H -->|tracks| K[ResourcesUsed]
-    H -->|tracks| L[Achievements]
+    A[User] -->|creates|> B[Journal]
+    A -->|creates|> C[Reminder]
+    A -->|checks in|> D[Mood]
+    B -->|has|> E[Attachment]
+    C -->|has|> F[ReminderDays]
+    D -->|has|> G[MoodType]
+    A -->|has|> H[UserStats]
+    H -->|tracks|> I[JournalEntries]
+    H -->|tracks|> J[MoodCheckIns]
+    H -->|tracks|> K[ResourcesUsed]
+    H -->|tracks|> L[Achievements]
 ```
 
 ---
 
-## Database Schema (Main Entities)
+## 🗄️ Database ER Diagram
+
+```mermaid
+erDiagram
+    USERS ||--o{ JOURNALS : has
+    USERS ||--o{ MOODS : "checks in"
+    USERS ||--o{ REMINDERS : sets
+    USERS ||--|| USER_STATS : owns
+    USERS ||--o{ TOKEN : has
+    JOURNALS }o--|| MOODS : "linked mood"
+    JOURNALS }o--|| ATTACHMENT : "has"
+    MOODS }o--|| LOCATION : "recorded at"
+    REMINDERS }o--|| REMINDER_DAYS : "on days"
+    USER_STATS }o--o{ ACHIEVEMENTS : "earns"
+```
+
+---
+
+## 🔐 Security Flow (JWT Authentication)
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant FE as Frontend
+    participant BE as Backend
+    participant DB as Database
+    U->>FE: Login/Register
+    FE->>BE: POST /auth (credentials)
+    BE->>DB: Validate user
+    BE-->>FE: JWT Access & Refresh Token
+    FE->>BE: Authenticated API Request (JWT)
+    BE->>DB: Validate JWT & fetch data
+    BE-->>FE: Response
+```
+
+---
+
+## 🗃️ Database Schema (Main Entities)
 
 - **User** (`users`):
   - id (UUID, PK)
@@ -38,7 +86,7 @@ graph LR
 
 ---
 
-## Security Mechanism
+## 🛡️ Security Mechanism
 
 - **Authentication:** JWT-based, stateless sessions
 - **Authorization:** Role-based (USER, ADMIN), method-level security
@@ -48,7 +96,7 @@ graph LR
 
 ---
 
-## Technical Stack
+## 🚀 Technical Stack
 
 - **Language:** Java 17
 - **Framework:** Spring Boot 3.x
@@ -62,11 +110,11 @@ graph LR
 
 ---
 
-## Installation Guide
+## ⚙️ Installation Guide
 
 1. **Clone the repository:**
    ```powershell
-   git clone <your-repo-url>
+   git clone https://github.com/sanketp1/calm-pulse-backend.git
    cd calm-puleses-backend
    ```
 2. **Configure Database:**
