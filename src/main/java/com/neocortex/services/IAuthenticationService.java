@@ -1,8 +1,12 @@
 package com.neocortex.services;
 
-import com.neocortex.payloads.AuthenticationRequest;
-import com.neocortex.payloads.AuthenticationResponse;
-import com.neocortex.payloads.RegistrationRequest;
+import com.neocortex.payloads.auth.AuthenticationRequest;
+import com.neocortex.payloads.auth.AuthenticationResponse;
+import com.neocortex.payloads.auth.RegistrationRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 /**
  * Service interface for handling authentication-related operations within the application.
@@ -46,12 +50,16 @@ public interface IAuthenticationService {
      */
     void logout(String token);
 
-    /**
-     * Refreshes the authentication tokens using the provided refresh token.
+/**
+     * Refreshes the authentication token by generating a new access token.
+     * <p>
+     * This method extracts the refresh token from the provided HTTP request,
+     * validates it, and generates a new access token. The new token is then
+     * written to the HTTP response.
+     * </p>
      *
-     * @param token the refresh token (must be valid and not expired)
-     * @return {@link AuthenticationResponse} containing new access and refresh tokens, and creation timestamp
+     * @param request  the {@link HttpServletRequest} containing the refresh token
+     * @param response the {@link HttpServletResponse} where the new access token will be written
      */
-    AuthenticationResponse refreshToken(String token);
-
+    void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

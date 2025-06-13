@@ -1,8 +1,8 @@
 package com.neocortex.services;
 
-import com.neocortex.payloads.CreateReminderRequest;
-import com.neocortex.payloads.UpdateReminderRequest;
-import com.neocortex.payloads.ReminderResponse;
+import com.neocortex.payloads.reminder.CreateReminderRequest;
+import com.neocortex.payloads.reminder.UpdateReminderRequest;
+import com.neocortex.payloads.reminder.ReminderResponse;
 
 import java.util.List;
 import java.util.UUID;

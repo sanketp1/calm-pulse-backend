@@ -5,9 +5,9 @@ import com.neocortex.exceptions.UserAlreadyExistsException;
 import com.neocortex.models.Token;
 import com.neocortex.models.User;
 import com.neocortex.models.enums.Role;
-import com.neocortex.payloads.AuthenticationRequest;
-import com.neocortex.payloads.AuthenticationResponse;
-import com.neocortex.payloads.RegistrationRequest;
+import com.neocortex.payloads.auth.AuthenticationRequest;
+import com.neocortex.payloads.auth.AuthenticationResponse;
+import com.neocortex.payloads.auth.RegistrationRequest;
 import com.neocortex.repositories.TokenRepository;
 import com.neocortex.repositories.UserRepository;
 import com.neocortex.security.jwt.JwtService;
@@ -57,7 +57,7 @@ public class AuthenticationService implements IAuthenticationService {
             final User user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow();
             user.setLastLogin(LocalDateTime.now());
 
-            final String accessToken = jwtService.generateToken(user.getId().toString());
+            final String accessToken = jwtService.generateRefreshToken(user.getId().toString());
             final String refreshToken = jwtService.generateRefreshToken(user.getId().toString());
 
             revokeAllUserTokens(user);
@@ -110,7 +110,7 @@ public AuthenticationResponse register(RegistrationRequest registrationRequest) 
         );
 
         // Generate tokens
-        final String accessToken = jwtService.generateToken(user.getId().toString());
+        final String accessToken = jwtService.generateAccessToken(user.getId().toString());
         final String refreshToken = jwtService.generateRefreshToken(user.getId().toString());
 
         saveUserToken(user,accessToken);
@@ -177,7 +177,7 @@ public AuthenticationResponse register(RegistrationRequest registrationRequest) 
             return;
         }
 
-        if (!jwtService.isValidToken(userId, refreshToken)) {
+        if (!jwtService.isTokenValid(userId, refreshToken)) {
             log.warn("Invalid refresh token for user: {}", userId);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid refresh token");
@@ -185,7 +185,7 @@ public AuthenticationResponse register(RegistrationRequest registrationRequest) 
         }
 
         try {
-            var accessToken = jwtService.generateToken(user.getId().toString());
+            var accessToken = jwtService.generateAccessToken(user.getId().toString());
             revokeAllUserTokens(user);
             saveUserToken(user, accessToken);
 
@@ -209,7 +209,6 @@ public AuthenticationResponse register(RegistrationRequest registrationRequest) 
         var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
-                .tokenType(BEARER)
                 .expired(false)
                 .revoked(false)
                 .build();

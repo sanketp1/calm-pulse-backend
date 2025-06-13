@@ -1,0 +1,96 @@
+### Base Variables
+@base_url = http://localhost:8080/api/v1/journals
+@user_id = ece9cb69-d217-440b-a8c5-d51fb5ee9c2d
+@journal_id = 1
+@auth_token = Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJlY2U5Y2I2OS1kMjE3LTQ0MGItYThjNS1kNTFmYjVlZTljMmQiLCJpYXQiOjE3NDg0ODMwMDIsImV4cCI6MTc0ODU2OTQwMn0.4K8G9K9DemoUQI90DNGegljLweBsPODUklLZeuV2TVo
+
+###
+
+### Create Journal
+POST {{base_url}}/{{user_id}}
+Authorization: {{auth_token}}
+Content-Type: application/json
+
+{
+  "prompt": "Describe your happiest memory this week.",
+  "mood": {
+    "moodType": "HAPPY",
+    "value": 9,
+    "note": "Scored well in demo session.",
+    "location": {
+      "latitude": 18.5204,
+      "longitude": 73.8567,
+      "name": "Pune, India"
+    }
+  },
+  "title": "Demo Day Success",
+  "description": "Delivered a perfect pitch in front of the investors.",
+  "attachment": {
+    "fileName": "demo_pitch.jpg",
+    "fileType": "image/jpeg",
+    "fileUrl": "https://example.com/files/demo_pitch.jpg"
+  }
+}
+
+###
+
+### Get Journal By ID
+GET {{base_url}}/{{user_id}}/{{journal_id}}
+Authorization: {{auth_token}}
+
+###
+
+### Get All Journals (Paginated, latest first)
+GET {{base_url}}/{{user_id}}?limit=5
+Authorization: {{auth_token}}
+
+###
+
+### Get All Journals With Cursor
+GET {{base_url}}/{{user_id}}?cursor=2025-05-29T07:15:09.223703&limit=5
+Authorization: {{auth_token}}
+
+###
+
+### Update Journal
+PUT {{base_url}}/{{user_id}}/{{journal_id}}
+Authorization: {{auth_token}}
+Content-Type: application/json
+
+{
+  "prompt": "Updated prompt",
+  "mood": {
+    "id": 1,
+    "moodType": "HAPPY",
+    "value": 8,
+    "note": "Feeling great after meditation",
+    "timeStamp": "2025-05-29T10:30:00",
+    "location": {
+      "latitude": 18.5204,
+      "longitude": 73.8567,
+      "place": "Pune"
+    }
+  },
+  "title": "Updated Title",
+  "description": "Updated description text",
+  "attachment": {
+    "fileName": "meditation.jpg",
+    "fileType": "image/jpeg",
+    "fileUrl": "https://example.com/images/meditation.jpg"
+  }
+}
+
+###
+
+### Delete Journal
+DELETE {{base_url}}/{{user_id}}/{{journal_id}}
+Authorization: {{auth_token}}
+
+###
+
+### Delete Multiple Journals
+DELETE {{base_url}}/{{user_id}}
+Authorization: {{auth_token}}
+Content-Type: application/json
+
+[2]

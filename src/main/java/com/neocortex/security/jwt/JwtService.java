@@ -1,98 +1,141 @@
 package com.neocortex.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import io.jsonwebtoken.Jwts;
 
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Service for handling JWT operations such as token generation,
+ * validation, and extraction of claims.
+ */
 @Service
 public class JwtService {
 
-    @Value("${jwt-security.secret}")
-    private String SECRET_KEY;
+    @Value("${application.security.jwt.secret-key}")
+    private String rawSecretKey;
 
-    @Value("${jwt-security.expiration}")
-    private long EXPIRATION_TIME;
+    @Value("${application.security.jwt.expiration}")
+    private long accessTokenExpiration;
 
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshTokenExpiration;
+
+    private Key secretKey;
 
     /**
-     * Generates a JWT token for the given username.
-     *
-     * @param username the username for which to generate the token
-     * @return the generated JWT token
+     * Initializes the signing key after properties are injected.
      */
-    public String generateToken(String username) {
-        return generateToken(new HashMap<>(), username);
+    @PostConstruct
+    public void init() {
+        byte[] keyBytes = Base64.getDecoder().decode(rawSecretKey);
+        this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
     /**
-     * Generates a JWT token with additional claims for the given username.
+     * Generates a JWT access token with the given user ID as subject.
      *
-     * @param extraClaims additional claims to include in the token
-     * @param username    the username for which to generate the token
-     * @return the generated JWT token
+     * @param userId the user's UUID as a string
+     * @return generated JWT access token
      */
-    public String generateToken(Map<String,Object> extraClaims, String username) {
+    public String generateAccessToken(String userId) {
+        return buildToken(Map.of(), userId, accessTokenExpiration);
+    }
+
+    /**
+     * Generates a JWT refresh token with the given user ID as subject.
+     *
+     * @param userId the user's UUID as a string
+     * @return generated JWT refresh token
+     */
+    public String generateRefreshToken(String userId) {
+        return buildToken(Map.of(), userId, refreshTokenExpiration);
+    }
+
+    /**
+     * Generates a JWT token with extra claims and the given subject.
+     *
+     * @param extraClaims additional claims to include
+     * @param userId      the subject of the token (typically the user ID)
+     * @param expiration  expiration duration in milliseconds
+     * @return generated JWT token
+     */
+    private String buildToken(Map<String, Object> extraClaims, String userId, long expiration) {
         return Jwts.builder()
-                .signWith(getSecretKey(), SignatureAlgorithm.HS256)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .setClaims(extraClaims)
-                .setSubject(username)
+                .setSubject(userId)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
     /**
-     * Validates the provided JWT token.
+     * Extracts the user ID (subject) from the token.
      *
-     * @param token the JWT token to validate
-     * @return true if the token is valid, false otherwise
+     * @param token JWT token
+     * @return user ID as string
      */
-    public boolean isValidToken(String username, String token) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username)) && !isTokenExpired(token);
+    public String extractUserId(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 
     /**
-     * Extracts the username from the provided JWT token.
+     * Checks if the provided token is valid for the given user ID.
      *
-     * @param token the JWT token from which to extract the username
-     * @return the extracted username
+     * @param userId user ID to validate
+     * @param token  JWT token
+     * @return true if token is valid and belongs to the user
      */
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-      }
+    public boolean isTokenValid(String userId, String token) {
+        try {
+            return userId.equals(extractUserId(token)) && !isTokenExpired(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
+    /**
+     * Checks if the token is expired.
+     *
+     * @param token JWT token
+     * @return true if token is expired
+     */
+    private boolean isTokenExpired(String token) {
+        return extractClaim(token, Claims::getExpiration).before(new Date());
+    }
+
+    /**
+     * Extracts a specific claim from the token using a resolver function.
+     *
+     * @param token          JWT token
+     * @param claimsResolver function to extract the desired claim
+     * @param <T>            type of the claim
+     * @return extracted claim
+     */
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    /**
+     * Extracts all claims from the token.
+     *
+     * @param token JWT token
+     * @return all claims in the token
+     */
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSecretKey())
+                .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
-
-    private Key getSecretKey() {
-        byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    private boolean isTokenExpired(String token) {
-       return extractClaim(token, Claims::getExpiration).before(new Date());
-    }
-
-
 }

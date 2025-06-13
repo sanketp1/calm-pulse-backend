@@ -1,9 +1,9 @@
 package com.neocortex.services;
 
-import com.neocortex.payloads.CreateMoodRequest;
+import com.neocortex.payloads.mood.CreateMoodRequest;
 import com.neocortex.payloads.PaginatedResponse;
-import com.neocortex.payloads.UpdateMoodRequest;
-import com.neocortex.payloads.MoodResponse;
+import com.neocortex.payloads.mood.UpdateMoodRequest;
+import com.neocortex.payloads.mood.MoodResponse;
 
 import java.util.List;
 import java.util.UUID;

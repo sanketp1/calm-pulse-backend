@@ -1,7 +1,7 @@
 package com.neocortex.repositories;
 
-import com.neocortex.models.Resources;
+import com.neocortex.models.Resource;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ResourcesRepository extends JpaRepository<Resources,Long> {
+public interface ResourcesRepository extends JpaRepository<Resource,Long> {
 }

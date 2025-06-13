@@ -1,9 +1,9 @@
 package com.neocortex.services;
 
-import com.neocortex.payloads.CreateJournalRequest;
+import com.neocortex.payloads.journal.CreateJournalRequest;
 import com.neocortex.payloads.PaginatedResponse;
-import com.neocortex.payloads.UpdateJournalRequest;
-import com.neocortex.payloads.JournalResponse;
+import com.neocortex.payloads.journal.UpdateJournalRequest;
+import com.neocortex.payloads.journal.JournalResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;

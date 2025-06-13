@@ -2,10 +2,11 @@ package com.neocortex.config;
 
 import com.neocortex.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -13,13 +14,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final var user = userRepository.findByEmail(username)
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        return userRepository.findById(UUID.fromString(userId))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new User(
-                user.getEmail(),
-                user.getPassword(),
-                List.of(new SimpleGrantedAuthority(user.getRole().name()))
-        );
     }
 }

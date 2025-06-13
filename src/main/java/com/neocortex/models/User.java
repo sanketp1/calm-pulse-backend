@@ -3,8 +3,14 @@ package com.neocortex.models;
 import com.neocortex.models.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -41,7 +47,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     /**
      * Unique identifier for the user (UUID).
@@ -86,7 +92,7 @@ public class User {
      * URL or path to the user's avatar image.
      * Optional field for profile customization.
      */
-    private String avatar;
+    private String avatarURL;
 
     /**
      * The date and time when the user registered.
@@ -110,6 +116,11 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @PrePersist
+    public void prePersist() {
+        this.joinedDate = LocalDateTime.now();
+    }
+
     /**
      * List of journals associated with the user.
      * Represents the user's journal entries.
@@ -130,4 +141,74 @@ public class User {
      */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reminder> reminders;
+
+    /**
+     * Retrieves the authorities granted to the user.
+     *
+     * @return a collection of granted authorities
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
+    }
+
+    /**
+     * Retrieves the username used to authenticate the user.
+     *
+     * @return the username (email in this case)
+     */
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+   /**
+    * Retrieves the user's hashed password.
+    *
+    * @return the hashed password of the user
+    */
+   @Override
+   public String getPassword() {
+       return password;
+   }
+
+    /**
+     * Indicates whether the user's account has expired.
+     *
+     * @return true if the account is not expired, false otherwise
+     */
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    /**
+     * Indicates whether the user's account is locked.
+     *
+     * @return true if the account is not locked, false otherwise
+     */
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    /**
+     * Indicates whether the user's credentials have expired.
+     *
+     * @return true if the credentials are not expired, false otherwise
+     */
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    /**
+     * Indicates whether the user is enabled.
+     *
+     * @return true if the user is enabled, false otherwise
+     */
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

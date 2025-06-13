@@ -1,18 +1,20 @@
 package com.neocortex.services.impl;
 
+import com.neocortex.events.MoodCheckInCreatedEvent;
 import com.neocortex.exceptions.UserNotFoundException;
 import com.neocortex.models.Mood;
 import com.neocortex.models.User;
-import com.neocortex.payloads.CreateMoodRequest;
-import com.neocortex.payloads.MoodResponse;
+import com.neocortex.payloads.mood.CreateMoodRequest;
+import com.neocortex.payloads.mood.MoodResponse;
 import com.neocortex.payloads.PaginatedResponse;
-import com.neocortex.payloads.UpdateMoodRequest;
+import com.neocortex.payloads.mood.UpdateMoodRequest;
 import com.neocortex.repositories.MoodRepository;
 import com.neocortex.repositories.UserRepository;
 import com.neocortex.services.IMoodService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,6 +31,7 @@ public class MoodService implements IMoodService {
     private final MoodRepository moodRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
 
     @Override
@@ -46,6 +49,7 @@ public class MoodService implements IMoodService {
 
         Mood savedMood = moodRepository.save(mood);
         log.info("Mood created with ID: {} for user: {}", savedMood.getId(), userId);
+        eventPublisher.publishEvent(new MoodCheckInCreatedEvent(userId, savedMood.getValue()));
         return modelMapper.map(savedMood, MoodResponse.class);
     }
 

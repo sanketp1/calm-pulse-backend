@@ -1,9 +1,9 @@
 package com.neocortex.controllers;
 
-import com.neocortex.payloads.CreateMoodRequest;
-import com.neocortex.payloads.MoodResponse;
+import com.neocortex.payloads.mood.CreateMoodRequest;
+import com.neocortex.payloads.mood.MoodResponse;
 import com.neocortex.payloads.PaginatedResponse;
-import com.neocortex.payloads.UpdateMoodRequest;
+import com.neocortex.payloads.mood.UpdateMoodRequest;
 import com.neocortex.services.IMoodService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

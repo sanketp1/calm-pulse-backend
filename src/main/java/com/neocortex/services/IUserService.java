@@ -1,8 +1,10 @@
 package com.neocortex.services;
 
 
-import com.neocortex.payloads.UpdateUserRequest;
-import com.neocortex.payloads.UserResponse;
+import com.neocortex.payloads.PaginatedResponse;
+import com.neocortex.payloads.user.UpdateUserRequest;
+import com.neocortex.payloads.user.UserResponse;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,8 +16,8 @@ import java.util.UUID;
  * It is intended to be implemented by service classes that handle user management logic.
  * <p>
  * <b>Note:</b> Some methods are not restricted to admin users and may be accessible to regular users,
- * such as {@link #getUserById(UUID)}, {@link #getUserByEmail(String)}, and {@link #updateUser(UUID, UpdateUserRequest)}.
- * Methods like {@link #getAllUsers()}, {@link #deleteUser(UUID)}, and {@link #deleteMultipleUsers(List)} are typically admin-only.
+ * such as {@link #getUserById(UUID)} and {@link #updateUser(UUID, UpdateUserRequest)}.
+ * Methods like {@link #getAllUsers(String,Integer)}, {@link #deleteUser(UUID)}, and {@link #deleteMultipleUsers(List)} are typically admin-only.
  * </p>
  * <p>
  * <b>Fields and their purposes:</b>
@@ -31,6 +33,14 @@ import java.util.UUID;
 public interface IUserService {
 
     /**
+     * Retrieves details of the currently authenticated user.
+     *
+     * @param authentication the {@link Authentication} object containing the current user's authentication details
+     * @return {@link UserResponse} containing the authenticated user's details
+     */
+    UserResponse getCurrentUser(Authentication authentication);
+
+    /**
      * Retrieves a user's details by their unique identifier.
      *
      * @param id the {@link UUID} of the user to retrieve
@@ -39,22 +49,16 @@ public interface IUserService {
     UserResponse getUserById(UUID id);
 
     /**
-     * Retrieves a user's details by their email address.
-     *
-     * @param email the email address of the user to retrieve
-     * @return {@link UserResponse} containing user details
-     */
-    UserResponse getUserByEmail(String email);
-
-    /**
-     * Returns a list of all users in the system.
+     * Retrieves a paginated list of all users in the system.
      * <p>
      * <b>Admin-only operation.</b>
      * </p>
      *
-     * @return list of {@link UserResponse} objects for all users
+     * @param cursorId the cursor string for pagination
+     * @param size      the number of users to retrieve per page
+     * @return {@link PaginatedResponse} containing a list of {@link UserResponse} objects
      */
-    List<UserResponse> getAllUsers();
+    PaginatedResponse<UserResponse> getAllUsers(String cursorId, Integer size);
 
     /**
      * Updates user information for the specified user.
@@ -64,6 +68,19 @@ public interface IUserService {
      * @return {@link UserResponse} with updated user details
      */
     UserResponse updateUser(UUID id, UpdateUserRequest updateUserRequest);
+
+
+    /**
+     * Changes the password for the specified user.
+     * <p>
+     * This method allows updating the password of a user identified by their unique identifier.
+     * It is typically used for account recovery or administrative purposes.
+     * </p>
+     *
+     * @param id          the {@link UUID} of the user whose password is to be changed
+     * @param newPassword the new password to set for the user
+     */
+    void changePassword(UUID id, String newPassword);
 
     /**
      * Deletes a user by their unique identifier.

@@ -1,0 +1,45 @@
+### Create Mood
+POST http://localhost:8080/api/v1/moods?userId=c31e0db0-8eed-4fa7-b41c-48cd6f584082
+Content-Type: application/json
+
+{
+  "moodType": "HAPPY",
+  "value": 8,
+  "note": "Feeling awesome",
+  "timeStamp": "2025-05-27T10:30:00",
+  "location": {
+    "name": "Cafe",
+    "latitude": 18.52,
+    "longitude": 73.85
+  }
+}
+
+### Get Mood by ID
+GET http://localhost:8080/api/v1/moods/1?userId=c31e0db0-8eed-4fa7-b41c-48cd6f584082
+
+### Get All Moods for User
+GET http://localhost:8080/api/v1/moods?userId=c31e0db0-8eed-4fa7-b41c-48cd6f584082
+
+### Update Mood
+PUT http://localhost:8080/api/v1/moods/1?userId=c31e0db0-8eed-4fa7-b41c-48cd6f584082
+Content-Type: application/json
+
+{
+  "moodType": "CALM",
+  "value": 7,
+  "note": "Relaxing evening",
+  "location": {
+    "name": "Home",
+    "latitude": 18.51,
+    "longitude": 73.84
+  }
+}
+
+### Delete Mood
+DELETE http://localhost:8080/api/v1/moods/1?userId=c31e0db0-8eed-4fa7-b41c-48cd6f584082
+
+### Delete Multiple Moods
+DELETE http://localhost:8080/api/v1/moods/multiple?userId=c31e0db0-8eed-4fa7-b41c-48cd6f584082
+Content-Type: application/json
+
+[1, 2, 3]

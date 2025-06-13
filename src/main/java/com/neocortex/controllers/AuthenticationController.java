@@ -1,8 +1,8 @@
 package com.neocortex.controllers;
 
-import com.neocortex.payloads.AuthenticationRequest;
-import com.neocortex.payloads.AuthenticationResponse;
-import com.neocortex.payloads.RegistrationRequest;
+import com.neocortex.payloads.auth.AuthenticationRequest;
+import com.neocortex.payloads.auth.AuthenticationResponse;
+import com.neocortex.payloads.auth.RegistrationRequest;
 import com.neocortex.services.impl.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

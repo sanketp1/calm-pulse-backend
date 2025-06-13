@@ -1,9 +1,13 @@
 package com.neocortex.services.impl;
 
+import com.neocortex.events.JournalCreatedEvent;
 import com.neocortex.models.Journal;
 import com.neocortex.models.Mood;
 import com.neocortex.models.User;
 import com.neocortex.payloads.*;
+import com.neocortex.payloads.journal.CreateJournalRequest;
+import com.neocortex.payloads.journal.JournalResponse;
+import com.neocortex.payloads.journal.UpdateJournalRequest;
 import com.neocortex.repositories.JournalRepository;
 import com.neocortex.repositories.MoodRepository;
 import com.neocortex.repositories.UserRepository;
@@ -11,6 +15,7 @@ import com.neocortex.services.IJournalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +33,8 @@ public class JournalService implements IJournalService {
     private final MoodRepository moodRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final ApplicationEventPublisher eventPublisher;
+
 
     @Override
     public JournalResponse createJournal(UUID userId, CreateJournalRequest createJournalRequest) {
@@ -144,6 +151,9 @@ public class JournalService implements IJournalService {
 
         Journal saved = journalRepository.save(journal);
         log.info("Journal with id: {} saved successfully for userId: {}", saved.getId(), userId);
+        if(createRequest!=null){
+            eventPublisher.publishEvent(new JournalCreatedEvent(saved.getUser().getId()));
+        }
         return modelMapper.map(saved, JournalResponse.class);
     }
 }

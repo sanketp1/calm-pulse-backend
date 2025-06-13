@@ -17,10 +17,10 @@ public interface JournalRepository extends JpaRepository<Journal, Long> {
     @Query(
             value = """
                         SELECT j FROM Journal j
-                        WHERE j.user.id = :userId
+                        WHERE j.id = :journalId AND j.user.id = :userId
                     """
     )
-    Optional<Journal> findByIdAndUserId(Long journalId, UUID userId);
+    Optional<Journal> findByIdAndUserId(@Param("journalId") Long journalId, @Param("userId") UUID userId);
 
     @Query(
             value = """

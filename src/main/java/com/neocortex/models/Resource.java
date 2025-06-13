@@ -34,7 +34,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "resources")
-public class Resources {
+public class Resource {
 
     /**
      * Unique identifier for the resource.
@@ -100,4 +100,13 @@ public class Resources {
      */
     @ElementCollection
     private List<Attachment> attachments;
+
+
+    /**
+     * Indicates whether the resource is currently being used.
+     * Type: boolean
+     * Default value is false.
+     */
+    @Column(name = "is_enrolled")
+    private boolean isEnrolled = false;
 }

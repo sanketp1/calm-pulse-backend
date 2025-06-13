@@ -18,6 +18,16 @@ spring:
         format_sql: true
         use_sql_comments: true
 
-jwt-security:
-  secret: 68d1cfe361c1a01dd424b8ba8cd6c01ec4d6701c3e609ff8e5096b8c882ad36c
-  expiration: 86400 # 1 day
+#logging:
+#    level:
+#        org.springframework: DEBUG
+#        org.hibernate.SQL: DEBUG
+#        org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+application:
+  security:
+    jwt:
+      secret-key: 68d1cfe361c1a01dd424b8ba8cd6c01ec4d6701c3e609ff8e5096b8c882ad36c
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days

@@ -1,6 +1,6 @@
 package com.neocortex.services;
 
-import com.neocortex.payloads.UserStatsResponse;
+import com.neocortex.payloads.user_stats.UserStatsResponse;
 
 import java.util.UUID;
 

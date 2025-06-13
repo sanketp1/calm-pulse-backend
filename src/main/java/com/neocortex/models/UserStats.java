@@ -4,6 +4,7 @@ import com.neocortex.models.embeddables.Achievements;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -104,4 +105,25 @@ public class UserStats {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
+
+
+    /**
+     * Resets all the statistical data and achievements for the user.
+     * <p>
+     * This method sets all numerical fields to their default values (e.g., 0 or 0L)
+     * and clears the list of achievements. It is typically used to reset a user's
+     * progress or prepare the entity for reuse.
+     * </p>
+     */
+    public void reset() {
+        this.setAverageMood(0); // Reset average mood to 0
+        this.setLevel(0); // Reset user level to 0
+        this.setResourcesUsed(0); // Reset resources used to 0
+        this.setJournalEntries(0); // Reset journal entries count to 0
+        this.setMoodCheckIns(0); // Reset mood check-ins count to 0
+        this.setLongestStreak(0L); // Reset longest streak to 0
+        this.setCurrentStreak(0L); // Reset current streak to 0
+        this.setAchievement(new ArrayList<>()); // Clear the list of achievements
+    }
+
 }

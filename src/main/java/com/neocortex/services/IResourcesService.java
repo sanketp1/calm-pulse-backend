@@ -1,8 +1,8 @@
 package com.neocortex.services;
 
-import com.neocortex.payloads.CreateResourceRequest;
-import com.neocortex.payloads.UpdateResourceRequest;
-import com.neocortex.payloads.ResourceResponse;
+import com.neocortex.payloads.resource.CreateResourceRequest;
+import com.neocortex.payloads.resource.UpdateResourceRequest;
+import com.neocortex.payloads.resource.ResourceResponse;
 
 import java.util.List;
 
